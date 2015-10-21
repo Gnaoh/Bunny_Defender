@@ -167,3 +167,5 @@ Thousands of games have been made in Phaser. From game jam entries to titles by 
 #### MORE: http://itch.io/
 
 #DEMO TIME!
+
+clone this repo to checkout the game i put together!
