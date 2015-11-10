@@ -8,7 +8,6 @@ BunnyDefender.StartMenu.prototype = {
 	
 	create: function () {                      //built into phaser
         this.ding = this.add.audio('select_audio');
-        
 		startBG = this.add.image(0, 0, 'titlescreen'); //x,y of zero
 		startBG.inputEnabled = true; //allow accept mouse clicks and touches
 		startBG.events.onInputDown.addOnce(this.startGame, this); //find event handler to background, will invoke startGame

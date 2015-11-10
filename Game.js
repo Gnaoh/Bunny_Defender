@@ -24,22 +24,20 @@ BunnyDefender.Game.prototype = {
         this.timer.loop(1000, this.updateSeconds, this )//everytime it is loop (1000ms), it will hit the updateSeconds function
         this.totalBunnies = 20;
         this.totalSpacerocks = 13;
-        
         this.music = this.add.audio('game_audio'); //play game audio
-        this.music.play('', 0, 0.3, true);   //marker, position, volume, loop // start at specific position //volume//loop or play it once
+        this.music.play('', 0, 0.3, true);   //start at specific position //volume//loop or play it once
         this.ouch = this.add.audio('hurt_audio');
         this.boom = this.add.audio('explosion_audio');
         this.ding = this.add.audio('select_audio');
         this.buildWorld();
-    },
-     //Runs once, use to setup what we need in the state
+    },//Runs once, use to setup what we need in the state
     
     updateSeconds: function (){
         this.secondsElapsed++;
     },
     
     buildWorld: function() {
-        this.add.image(0,0, 'sky');
+        this.add.image(0, 0, 'sky');
         this.add.image(0, 800, 'hill');
         this.buildBunnies();
         this.buildSpaceRocks();
@@ -129,7 +127,7 @@ BunnyDefender.Game.prototype = {
     fireBurst: function(pointer) {
         if (this.gameover == false){
         this.boom.play();
-        this.volume = 0.2 // setting volumn, you can do it in the play function or here
+        this.volume = 0.3 // setting volumn, you can do it in the play function or here
         this.burst.emitX = pointer.x; //set x pointer
         this.burst.emitY = pointer.y; //set 6 pointer
         this.burst.start(true, 2000, null, 20); //(explode, lifespan, frequency, quantity) //true: whether or not the rock acts as an explosion.
@@ -143,8 +141,9 @@ BunnyDefender.Game.prototype = {
     bunnyCollision: function (r, b) {
         if (b.exists) { //if bunny exist -->
             this.ouch.play();
-            this.makeGhost(b);
+            this.volume = 1;
             this.respawnRock(r); //--> respawn the rock
+            this.makeGhost(b);
             b.kill(); //phaser function to kill a sprite (KILL THE BUNNY)
             this.totalBunnies--; //derement the bunnies if they are killed
             this.checkBunniesLeft();
@@ -156,10 +155,10 @@ BunnyDefender.Game.prototype = {
             this.gameover = true;
             this.music.stop();
             this.countdown.setText('GAME OVER');
-            this.overmessage = this.add.bitmapText(this.world.centerX-170, this.world.centerY-40, 'eightbitwonder', 'ALL DEAD\n\n' + this.secondsElapsed, 42); //setting the bitmap text to the center of the world, with 42 size
-this.overmessage.align = "center";
-this.overmessage.inputEnabled = true; //allow use to click on the text to respond to it
-this.overmessage.events.onInputDown.addOnce(this.quitGame, this); //responding to the text when clicked
+            this.overmessage = this.add.bitmapText(this.world.centerX-170, this.world.centerY-40, 'eightbitwonder', 'ALL DEAD\n\n' + 'Score' + this.secondsElapsed, 42); //setting the bitmap text to the center of the world, with 42 size
+            this.overmessage.align = "center";
+            this.overmessage.inputEnabled = true; //allow use to click on the text to respond to it
+            this.overmessage.events.onInputDown.addOnce(this.quitGame, this); //responding to the text when clicked
 
         } else {
             this.countdown.setText('Bunnies left to SAVE ' + this.totalBunnies);
@@ -174,6 +173,7 @@ this.overmessage.events.onInputDown.addOnce(this.quitGame, this); //responding t
     friendlyFire: function(b, e){ //if spacerocks are destroyed too close to the bunnies, the particles will kill it
       if (b.exists){
           this.ouch.play();
+          this.volume = 1;
           this.makeGhost(b); //calls the ghost function below
           b.kill();
           this.totalBunnies--;
